@@ -33,7 +33,7 @@ import {
 
 const Dashboard = () => {
   const { state } = useBusinessContext();
-  const { user } = useAuth();
+  const { user, businessProfile } = useAuth();
   const { products, customers, invoices } = state;
 
   // Calculate metrics
@@ -87,7 +87,7 @@ const Dashboard = () => {
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">
-          Welcome back, {user?.businessName || 'Business Owner'}!
+          Welcome back, {businessProfile?.companyName || user?.name || 'Business Owner'}!
         </h1>
         <p className="text-blue-100">
           Here's what's happening with your business today

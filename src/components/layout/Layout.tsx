@@ -1,11 +1,14 @@
 
-import { Outlet } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MobileNavigation from './MobileNavigation';
 import DesktopNavigation from './DesktopNavigation';
 import Header from './Header';
 
-const Layout = () => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -14,7 +17,7 @@ const Layout = () => {
       <div className="flex">
         {!isMobile && <DesktopNavigation />}
         <main className="flex-1 p-4 pb-20 md:pb-4">
-          <Outlet />
+          {children}
         </main>
       </div>
       {isMobile && <MobileNavigation />}

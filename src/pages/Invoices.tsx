@@ -135,7 +135,7 @@ const Invoices = () => {
       dispatch({ type: 'ADD_INVOICE', payload: invoiceData });
       toast({
         title: 'Invoice Created',
-        description: `Invoice ${invoiceData.invoiceNumber} has been ${isDraft ? 'saved as draft' : 'finalized'}.`,
+        description: `Invoice ${invoiceData.invoiceNumber} has been ${isDraft ? 'saved as draft' : 'sent'}.`,
       });
     }
 
@@ -196,7 +196,7 @@ const Invoices = () => {
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="draft">Draft</SelectItem>
-            <SelectItem value="finalized">Finalized</SelectItem>
+            <SelectItem value="sent">Sent</SelectItem>
             <SelectItem value="paid">Paid</SelectItem>
           </SelectContent>
         </Select>
@@ -312,7 +312,7 @@ const Invoices = () => {
                   Save as Draft
                 </Button>
                 <Button onClick={() => handleSubmit(false)} className="flex-1">
-                  {editingInvoice ? 'Update' : 'Finalize'} Invoice
+                  {editingInvoice ? 'Update' : 'Send'} Invoice
                 </Button>
               </div>
             </div>
@@ -333,11 +333,11 @@ const Invoices = () => {
                 <div className="flex items-center gap-2">
                   <Badge variant={
                     invoice.status === 'paid' ? 'default' :
-                    invoice.status === 'finalized' ? 'secondary' : 'outline'
+                    invoice.status === 'sent' ? 'secondary' : 'outline'
                   }>
                     {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
                   </Badge>
-                  <span className="font-bold text-lg">${invoice.total.toFixed(2)}</span>
+                  <span className="font-bold text-lg">₹{invoice.total.toFixed(2)}</span>
                 </div>
               </div>
             </CardHeader>
@@ -354,12 +354,12 @@ const Invoices = () => {
                   </Button>
                   
                   {invoice.status === 'draft' && (
-                    <Button size="sm" onClick={() => handleStatusChange(invoice, 'finalized')}>
-                      Finalize
+                    <Button size="sm" onClick={() => handleStatusChange(invoice, 'sent')}>
+                      Send
                     </Button>
                   )}
                   
-                  {invoice.status === 'finalized' && (
+                  {invoice.status === 'sent' && (
                     <Button size="sm" onClick={() => handleStatusChange(invoice, 'paid')}>
                       Mark Paid
                     </Button>
