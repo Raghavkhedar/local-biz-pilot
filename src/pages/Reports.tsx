@@ -1,4 +1,3 @@
-
 import { useBusinessContext } from '@/contexts/BusinessContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -11,13 +10,13 @@ const Reports = () => {
   const { products, customers, invoices } = state;
   const [reportType, setReportType] = useState('overview');
 
-  // Calculate metrics
+  // Calculate metrics with proper typing
   const totalRevenue = invoices
     .filter(i => i.status === 'paid')
     .reduce((sum, invoice) => sum + invoice.total, 0);
 
   const totalOutstanding = invoices
-    .filter(i => i.status === 'finalized')
+    .filter(i => i.status === 'sent')
     .reduce((sum, invoice) => sum + invoice.total, 0);
 
   const totalInventoryValue = products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
@@ -33,7 +32,7 @@ const Reports = () => {
 
   const salesChartData = Object.entries(salesByMonth).map(([month, total]) => ({
     month,
-    total: parseFloat(total.toFixed(2))
+    total: Number(total.toFixed(2))
   }));
 
   // Top products by quantity sold
@@ -46,7 +45,7 @@ const Reports = () => {
     }, {} as Record<string, number>);
 
   const topProductsData = Object.entries(productSales)
-    .map(([name, quantity]) => ({ name, quantity }))
+    .map(([name, quantity]) => ({ name, quantity: Number(quantity) }))
     .sort((a, b) => b.quantity - a.quantity)
     .slice(0, 5);
 
@@ -58,7 +57,7 @@ const Reports = () => {
 
   const categoryChartData = Object.entries(inventoryByCategory).map(([category, quantity]) => ({
     category,
-    quantity
+    quantity: Number(quantity)
   }));
 
   const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
@@ -75,7 +74,7 @@ const Reports = () => {
     }, {} as Record<string, number>);
 
   const topCustomers = Object.entries(customerRevenue)
-    .map(([name, revenue]) => ({ name, revenue }))
+    .map(([name, revenue]) => ({ name, revenue: Number(revenue) }))
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5);
 
@@ -107,7 +106,7 @@ const Reports = () => {
                 <span className="text-2xl">💰</span>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-green-600">₹{totalRevenue.toFixed(2)}</div>
                 <p className="text-xs text-muted-foreground">From paid invoices</p>
               </CardContent>
             </Card>
@@ -118,7 +117,7 @@ const Reports = () => {
                 <span className="text-2xl">📋</span>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-amber-600">${totalOutstanding.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-amber-600">₹{totalOutstanding.toFixed(2)}</div>
                 <p className="text-xs text-muted-foreground">Pending payments</p>
               </CardContent>
             </Card>
@@ -129,7 +128,7 @@ const Reports = () => {
                 <span className="text-2xl">📦</span>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">${totalInventoryValue.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-blue-600">₹{totalInventoryValue.toFixed(2)}</div>
                 <p className="text-xs text-muted-foreground">{products.length} products</p>
               </CardContent>
             </Card>
@@ -249,7 +248,7 @@ const Reports = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</div>
+                  <div className="text-2xl font-bold text-green-600">₹{totalRevenue.toFixed(2)}</div>
                   <div className="text-sm text-muted-foreground">Total Revenue</div>
                 </div>
                 <div className="text-center">

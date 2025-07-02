@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useBusinessContext } from '@/contexts/BusinessContext';
 import { Customer } from '@/contexts/BusinessContext';
@@ -75,7 +74,8 @@ const Customers = () => {
       email: formData.email,
       address: formData.address,
       gstNumber: formData.gstNumber || undefined,
-      createdAt: editingCustomer?.createdAt || new Date().toISOString()
+      createdAt: editingCustomer?.createdAt || new Date(),
+      updatedAt: new Date()
     };
 
     if (editingCustomer) {

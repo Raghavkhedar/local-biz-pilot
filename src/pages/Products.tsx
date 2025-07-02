@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useBusinessContext } from '@/contexts/BusinessContext';
 import { Product } from '@/contexts/BusinessContext';
@@ -87,7 +86,9 @@ const Products = () => {
       quantity: parseInt(formData.quantity),
       category: formData.category,
       barcode: formData.barcode || undefined,
-      lowStockThreshold: parseInt(formData.lowStockThreshold)
+      lowStockThreshold: parseInt(formData.lowStockThreshold),
+      createdAt: editingProduct?.createdAt || new Date(),
+      updatedAt: new Date()
     };
 
     if (editingProduct) {

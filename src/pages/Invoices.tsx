@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useBusinessContext } from '@/contexts/BusinessContext';
 import { Invoice, InvoiceItem } from '@/contexts/BusinessContext';
@@ -67,7 +66,7 @@ const Invoices = () => {
         productId: product.id,
         productName: product.name,
         quantity: currentItem.quantity,
-        price: product.price,
+        unitPrice: product.price,
         total: currentItem.quantity * product.price
       };
       setInvoiceItems([...invoiceItems, newItem]);
@@ -120,9 +119,10 @@ const Invoices = () => {
       subtotal,
       tax,
       total,
-      status: isDraft ? 'draft' : 'finalized',
-      createdAt: editingInvoice?.createdAt || new Date().toISOString(),
-      dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString() // 15 days from now
+      status: isDraft ? 'draft' : 'sent',
+      createdAt: editingInvoice?.createdAt || new Date(),
+      updatedAt: new Date(),
+      dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000)
     };
 
     if (editingInvoice) {
@@ -166,8 +166,8 @@ const Invoices = () => {
     }
   };
 
-  const handleStatusChange = (invoice: Invoice, newStatus: 'draft' | 'finalized' | 'paid') => {
-    const updatedInvoice = { ...invoice, status: newStatus };
+  const handleStatusChange = (invoice: Invoice, newStatus: 'draft' | 'sent' | 'paid' | 'cancelled') => {
+    const updatedInvoice = { ...invoice, status: newStatus, updatedAt: new Date() };
     dispatch({ type: 'UPDATE_INVOICE', payload: updatedInvoice });
     toast({
       title: 'Status Updated',
@@ -275,11 +275,11 @@ const Invoices = () => {
                         <div>
                           <div className="font-medium">{item.productName}</div>
                           <div className="text-sm text-muted-foreground">
-                            {item.quantity} × ${item.price.toFixed(2)}
+                            {item.quantity} × ₹{item.unitPrice.toFixed(2)}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="font-medium">${item.total.toFixed(2)}</span>
+                          <span className="font-medium">₹{item.total.toFixed(2)}</span>
                           <Button size="sm" variant="destructive" onClick={() => removeItemFromInvoice(item.productId)}>
                             Remove
                           </Button>
