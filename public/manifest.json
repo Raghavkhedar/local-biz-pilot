@@ -1,0 +1,41 @@
+
+{
+  "name": "BizManager - Local Business Management",
+  "short_name": "BizManager",
+  "description": "Complete business management solution for local businesses",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add Product",
+      "short_name": "Add Product",
+      "description": "Quickly add a new product to inventory",
+      "url": "/products?action=add",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "New Invoice",
+      "short_name": "New Invoice",
+      "description": "Create a new invoice",
+      "url": "/invoices?action=new",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
