@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
@@ -16,12 +16,7 @@ import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient();
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <LoginForm />;
-};
-
-const AppRoutes = () => {
+const AppContent = () => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
@@ -50,7 +45,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Router>
-          <AppRoutes />
+          <AppContent />
           <Toaster />
         </Router>
       </AuthProvider>
