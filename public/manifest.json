@@ -2,12 +2,15 @@
 {
   "name": "BizManager - Local Business Management",
   "short_name": "BizManager",
-  "description": "Complete business management solution for local businesses",
+  "description": "Complete business management solution for local businesses with GST compliance",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#2563eb",
   "orientation": "portrait-primary",
+  "categories": ["business", "finance", "productivity"],
+  "lang": "en",
+  "scope": "/",
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -17,25 +20,40 @@
     },
     {
       "src": "/icon-512x512.png",
-      "sizes": "512x512",
+      "sizes": "512x512", 
       "type": "image/png",
       "purpose": "maskable any"
     }
   ],
   "shortcuts": [
     {
+      "name": "New Sale",
+      "short_name": "New Sale",
+      "description": "Create a new sales invoice",
+      "url": "/invoices?action=new-sale",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
       "name": "Add Product",
-      "short_name": "Add Product",
+      "short_name": "Add Product", 
       "description": "Quickly add a new product to inventory",
       "url": "/products?action=add",
       "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "New Invoice",
-      "short_name": "New Invoice",
-      "description": "Create a new invoice",
-      "url": "/invoices?action=new",
+      "name": "View Reports",
+      "short_name": "Reports",
+      "description": "Access business reports and analytics",
+      "url": "/reports",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Customers",
+      "short_name": "Customers",
+      "description": "Manage customer database",
+      "url": "/customers",
       "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
