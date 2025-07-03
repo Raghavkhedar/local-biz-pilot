@@ -78,7 +78,7 @@ const Header = () => {
                   <p className="w-[200px] truncate text-sm text-muted-foreground">
                     {user?.email}
                   </p>
-                  <p className="text-xs text-blue-600 capitalize">{user?.role}</p>
+                  <p className="text-xs text-blue-600">Admin</p>
                 </div>
               </div>
               <DropdownMenuSeparator />

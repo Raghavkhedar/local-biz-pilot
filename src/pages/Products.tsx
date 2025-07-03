@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useBusinessContext } from '@/contexts/BusinessContext';
 import { Product } from '@/contexts/BusinessContext';
@@ -30,10 +31,10 @@ const Products = () => {
     category: '',
     barcode: '',
     lowStockThreshold: '10',
-    unit: 'box' as const,
+    unit: 'box' as 'box' | 'piece' | 'square_feet' | 'square_meter',
     piecesPerBox: '',
     areaPerPiece: '',
-    areaUnit: 'square_feet' as const,
+    areaUnit: 'square_feet' as 'square_feet' | 'square_meter',
     length: '',
     width: '',
     thickness: '',
@@ -41,9 +42,9 @@ const Products = () => {
     finish: '',
     color: '',
     pattern: '',
-    grade: 'standard' as const,
-    waterResistance: 'medium' as const,
-    slipResistance: 'R9' as const,
+    grade: 'standard' as 'premium' | 'standard' | 'economy',
+    waterResistance: 'medium' as 'high' | 'medium' | 'low',
+    slipResistance: 'R9' as 'R9' | 'R10' | 'R11' | 'R12' | 'R13',
     usage: [] as string[],
     manufacturer: '',
     origin: ''
@@ -282,7 +283,7 @@ const Products = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <Label htmlFor="unit">Unit</Label>
-                  <Select value={formData.unit} onValueChange={(value) => setFormData({...formData, unit: value as typeof formData.unit})}>
+                  <Select value={formData.unit} onValueChange={(value: 'box' | 'piece' | 'square_feet' | 'square_meter') => setFormData({...formData, unit: value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select unit" />
                     </SelectTrigger>
@@ -318,7 +319,7 @@ const Products = () => {
                 </div>
                 <div>
                   <Label htmlFor="areaUnit">Area Unit</Label>
-                  <Select value={formData.areaUnit} onValueChange={(value) => setFormData({...formData, areaUnit: value as typeof formData.areaUnit})}>
+                  <Select value={formData.areaUnit} onValueChange={(value: 'square_feet' | 'square_meter') => setFormData({...formData, areaUnit: value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select area unit" />
                     </SelectTrigger>
@@ -403,7 +404,7 @@ const Products = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <Label htmlFor="grade">Grade</Label>
-                  <Select value={formData.grade} onValueChange={(value) => setFormData({...formData, grade: value as typeof formData.grade})}>
+                  <Select value={formData.grade} onValueChange={(value: 'premium' | 'standard' | 'economy') => setFormData({...formData, grade: value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select grade" />
                     </SelectTrigger>
@@ -416,7 +417,7 @@ const Products = () => {
                 </div>
                 <div>
                   <Label htmlFor="waterResistance">Water Resistance</Label>
-                  <Select value={formData.waterResistance} onValueChange={(value) => setFormData({...formData, waterResistance: value as typeof formData.waterResistance})}>
+                  <Select value={formData.waterResistance} onValueChange={(value: 'high' | 'medium' | 'low') => setFormData({...formData, waterResistance: value})}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select water resistance" />
                     </SelectTrigger>
@@ -431,7 +432,7 @@ const Products = () => {
 
               <div>
                 <Label htmlFor="slipResistance">Slip Resistance</Label>
-                <Select value={formData.slipResistance} onValueChange={(value) => setFormData({...formData, slipResistance: value as typeof formData.slipResistance})}>
+                <Select value={formData.slipResistance} onValueChange={(value: 'R9' | 'R10' | 'R11' | 'R12' | 'R13') => setFormData({...formData, slipResistance: value})}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select slip resistance" />
                   </SelectTrigger>

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 // Types
@@ -147,6 +146,7 @@ const initialState: BusinessState = {
       quantity: 25,
       category: 'Electronics',
       lowStockThreshold: 5,
+      unit: 'piece',
       hsnCode: '8471',
       taxRate: 18,
       createdAt: new Date('2024-01-15'),
@@ -160,6 +160,7 @@ const initialState: BusinessState = {
       quantity: 50,
       category: 'Electronics',
       lowStockThreshold: 10,
+      unit: 'piece',
       hsnCode: '8471',
       taxRate: 18,
       createdAt: new Date('2024-01-20'),
