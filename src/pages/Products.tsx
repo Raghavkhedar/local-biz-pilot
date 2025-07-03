@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useBusinessContext } from '@/contexts/BusinessContext';
+import { useBusiness } from '@/contexts/BusinessContext';
 import { Product } from '@/contexts/BusinessContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useSearchParams } from 'react-router-dom';
 
 const Products = () => {
-  const { state, dispatch } = useBusinessContext();
+  const { state, dispatch } = useBusiness();
   const { products } = state;
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();

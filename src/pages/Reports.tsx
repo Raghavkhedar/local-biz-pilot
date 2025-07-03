@@ -1,4 +1,4 @@
-import { useBusinessContext } from '@/contexts/BusinessContext';
+import { useBusiness } from '@/contexts/BusinessContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 const Reports = () => {
-  const { state } = useBusinessContext();
+  const { state } = useBusiness();
   const { products, customers, invoices } = state;
   const [reportType, setReportType] = useState('overview');
 

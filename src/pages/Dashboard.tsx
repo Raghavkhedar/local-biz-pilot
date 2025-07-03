@@ -1,5 +1,5 @@
 
-import { useBusinessContext } from '@/contexts/BusinessContext';
+import { useBusiness } from '@/contexts/BusinessContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,9 +32,8 @@ import {
 } from 'recharts';
 
 const Dashboard = () => {
-  const { state } = useBusinessContext();
+  const { products, customers, invoices } = useBusiness();
   const { user, businessProfile } = useAuth();
-  const { products, customers, invoices } = state;
 
   // Calculate metrics
   const totalProducts = products.length;
