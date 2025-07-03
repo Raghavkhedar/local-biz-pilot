@@ -12,7 +12,25 @@ export interface Product {
   barcode?: string;
   lowStockThreshold: number;
   images?: string[];
-  unit?: string;
+  unit: 'box' | 'piece' | 'square_feet' | 'square_meter';
+  piecesPerBox?: number;
+  areaPerPiece?: number;
+  areaUnit?: 'square_feet' | 'square_meter';
+  dimensions?: {
+    length: number;
+    width: number;
+    thickness: number;
+  };
+  material?: string;
+  finish?: string;
+  color?: string;
+  pattern?: string;
+  grade?: 'premium' | 'standard' | 'economy';
+  waterResistance?: 'high' | 'medium' | 'low';
+  slipResistance?: 'R9' | 'R10' | 'R11' | 'R12' | 'R13';
+  usage?: string[];
+  manufacturer?: string;
+  origin?: string;
   hsnCode?: string;
   taxRate?: number;
   description?: string;

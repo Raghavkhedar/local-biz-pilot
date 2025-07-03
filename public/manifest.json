@@ -1,15 +1,16 @@
 
 {
-  "name": "BizManager - Local Business Management",
-  "short_name": "BizManager",
-  "description": "Complete business management solution for local businesses with GST compliance",
-  "start_url": "/",
+  "name": "Local Business Pilot - Business Management",
+  "short_name": "Business Pilot",
+  "description": "Complete offline-capable business management solution with GST compliance, inventory tracking, and financial reporting",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#2563eb",
-  "orientation": "portrait-primary",
-  "categories": ["business", "finance", "productivity"],
+  "orientation": "any",
+  "categories": ["business", "finance", "productivity", "utilities"],
   "lang": "en",
+  "dir": "ltr",
   "scope": "/",
   "icons": [
     {
@@ -23,37 +24,85 @@
       "sizes": "512x512", 
       "type": "image/png",
       "purpose": "maskable any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Dashboard with business analytics"
+    },
+    {
+      "src": "/screenshots/invoice.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Invoice creation interface"
     }
   ],
   "shortcuts": [
     {
-      "name": "New Sale",
-      "short_name": "New Sale",
-      "description": "Create a new sales invoice",
-      "url": "/invoices?action=new-sale",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "name": "Create Invoice",
+      "short_name": "New Invoice",
+      "description": "Create a new invoice",
+      "url": "/invoices?action=new",
+      "icons": [{ "src": "/shortcuts/invoice.png", "sizes": "192x192" }]
     },
     {
       "name": "Add Product",
       "short_name": "Add Product", 
-      "description": "Quickly add a new product to inventory",
+      "description": "Add a new product to inventory",
       "url": "/products?action=add",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/shortcuts/product.png", "sizes": "192x192" }]
     },
     {
-      "name": "View Reports",
+      "name": "Business Reports",
       "short_name": "Reports",
-      "description": "Access business reports and analytics",
+      "description": "View business analytics and reports",
       "url": "/reports",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Customers",
-      "short_name": "Customers",
-      "description": "Manage customer database",
-      "url": "/customers",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/shortcuts/reports.png", "sizes": "192x192" }]
     }
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "iarc_rating_id": "",
+  "share_target": {
+    "action": "/share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "invoice",
+          "accept": ["application/pdf", ".pdf"]
+        },
+        {
+          "name": "images",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "/open-file",
+      "accept": {
+        "application/pdf": [".pdf"],
+        "text/csv": [".csv"]
+      }
+    }
+  ],
+  "launch_handler": {
+    "client_mode": ["focus-existing", "auto"]
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

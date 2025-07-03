@@ -26,9 +26,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: 'owner' | 'manager' | 'staff';
   pin: string;
-  permissions: string[];
   lastLogin?: Date;
 }
 
@@ -39,8 +37,6 @@ interface AuthContextType {
   login: (pin: string) => Promise<boolean>;
   logout: () => void;
   updateBusinessProfile: (profile: Partial<BusinessProfile>) => void;
-  createUser: (userData: Omit<User, 'id' | 'lastLogin'>) => void;
-  users: User[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -74,26 +70,25 @@ const defaultUser: User = {
   id: 'default-owner',
   name: 'Business Owner',
   email: 'owner@business.com',
-  role: 'owner',
-  pin: '1234',
-  permissions: ['all']
+  pin: '1234'
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile | null>(null);
-  const [users, setUsers] = useState<User[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     // Load data from localStorage
     const savedUser = localStorage.getItem('currentUser');
     const savedProfile = localStorage.getItem('businessProfile');  
-    const savedUsers = localStorage.getItem('users');
 
     if (savedUser) {
       setUser(JSON.parse(savedUser));
       setIsAuthenticated(true);
+    } else {
+      setUser(defaultUser);
+      localStorage.setItem('currentUser', JSON.stringify(defaultUser));
     }
 
     if (savedProfile) {
@@ -102,19 +97,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setBusinessProfile(defaultBusinessProfile);
       localStorage.setItem('businessProfile', JSON.stringify(defaultBusinessProfile));
     }
-
-    if (savedUsers) {
-      setUsers(JSON.parse(savedUsers));
-    } else {
-      setUsers([defaultUser]);
-      localStorage.setItem('users', JSON.stringify([defaultUser]));
-    }
   }, []);
 
   const login = async (pin: string): Promise<boolean> => {
-    const foundUser = users.find(u => u.pin === pin);
-    if (foundUser) {
-      const updatedUser = { ...foundUser, lastLogin: new Date() };
+    if (pin === defaultUser.pin) {
+      const updatedUser = { ...defaultUser, lastLogin: new Date() };
       setUser(updatedUser);
       setIsAuthenticated(true);
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));
@@ -135,16 +122,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('businessProfile', JSON.stringify(updated));
   };
 
-  const createUser = (userData: Omit<User, 'id' | 'lastLogin'>) => {
-    const newUser = {
-      ...userData,
-      id: `user-${Date.now()}`,
-    };
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
-  };
-
   return (
     <AuthContext.Provider value={{
       user,
@@ -152,9 +129,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isAuthenticated,
       login,
       logout,
-      updateBusinessProfile,
-      createUser,
-      users
+      updateBusinessProfile
     }}>
       {children}
     </AuthContext.Provider>

@@ -29,7 +29,24 @@ const Products = () => {
     quantity: '',
     category: '',
     barcode: '',
-    lowStockThreshold: '10'
+    lowStockThreshold: '10',
+    unit: 'box' as const,
+    piecesPerBox: '',
+    areaPerPiece: '',
+    areaUnit: 'square_feet' as const,
+    length: '',
+    width: '',
+    thickness: '',
+    material: '',
+    finish: '',
+    color: '',
+    pattern: '',
+    grade: 'standard' as const,
+    waterResistance: 'medium' as const,
+    slipResistance: 'R9' as const,
+    usage: [] as string[],
+    manufacturer: '',
+    origin: ''
   });
 
   // Check if we should open the add dialog from URL params
@@ -56,7 +73,24 @@ const Products = () => {
       quantity: '',
       category: '',
       barcode: '',
-      lowStockThreshold: '10'
+      lowStockThreshold: '10',
+      unit: 'box',
+      piecesPerBox: '',
+      areaPerPiece: '',
+      areaUnit: 'square_feet',
+      length: '',
+      width: '',
+      thickness: '',
+      material: '',
+      finish: '',
+      color: '',
+      pattern: '',
+      grade: 'standard',
+      waterResistance: 'medium',
+      slipResistance: 'R9',
+      usage: [],
+      manufacturer: '',
+      origin: ''
     });
     setEditingProduct(null);
   };
@@ -70,7 +104,24 @@ const Products = () => {
       quantity: product.quantity.toString(),
       category: product.category,
       barcode: product.barcode || '',
-      lowStockThreshold: product.lowStockThreshold.toString()
+      lowStockThreshold: product.lowStockThreshold.toString(),
+      unit: product.unit,
+      piecesPerBox: product.piecesPerBox?.toString() || '',
+      areaPerPiece: product.areaPerPiece?.toString() || '',
+      areaUnit: product.areaUnit || 'square_feet',
+      length: product.dimensions?.length.toString() || '',
+      width: product.dimensions?.width.toString() || '',
+      thickness: product.dimensions?.thickness.toString() || '',
+      material: product.material || '',
+      finish: product.finish || '',
+      color: product.color || '',
+      pattern: product.pattern || '',
+      grade: product.grade || 'standard',
+      waterResistance: product.waterResistance || 'medium',
+      slipResistance: product.slipResistance || 'R9',
+      usage: product.usage || [],
+      manufacturer: product.manufacturer || '',
+      origin: product.origin || ''
     });
     setIsDialogOpen(true);
   };
@@ -87,6 +138,25 @@ const Products = () => {
       category: formData.category,
       barcode: formData.barcode || undefined,
       lowStockThreshold: parseInt(formData.lowStockThreshold),
+      unit: formData.unit,
+      piecesPerBox: formData.piecesPerBox ? parseInt(formData.piecesPerBox) : undefined,
+      areaPerPiece: formData.areaPerPiece ? parseFloat(formData.areaPerPiece) : undefined,
+      areaUnit: formData.areaUnit,
+      dimensions: {
+        length: parseFloat(formData.length),
+        width: parseFloat(formData.width),
+        thickness: parseFloat(formData.thickness)
+      },
+      material: formData.material || undefined,
+      finish: formData.finish || undefined,
+      color: formData.color || undefined,
+      pattern: formData.pattern || undefined,
+      grade: formData.grade,
+      waterResistance: formData.waterResistance,
+      slipResistance: formData.slipResistance,
+      usage: formData.usage,
+      manufacturer: formData.manufacturer || undefined,
+      origin: formData.origin || undefined,
       createdAt: editingProduct?.createdAt || new Date(),
       updatedAt: new Date()
     };
@@ -166,7 +236,7 @@ const Products = () => {
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
               <div>
                 <Label htmlFor="name">Product Name</Label>
                 <Input
@@ -208,6 +278,192 @@ const Products = () => {
                   />
                 </div>
               </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="unit">Unit</Label>
+                  <Select value={formData.unit} onValueChange={(value) => setFormData({...formData, unit: value as typeof formData.unit})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="box">Box</SelectItem>
+                      <SelectItem value="piece">Piece</SelectItem>
+                      <SelectItem value="square_feet">Square Feet</SelectItem>
+                      <SelectItem value="square_meter">Square Meter</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="piecesPerBox">Pieces per Box</Label>
+                  <Input
+                    id="piecesPerBox"
+                    type="number"
+                    value={formData.piecesPerBox}
+                    onChange={(e) => setFormData({...formData, piecesPerBox: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="areaPerPiece">Area per Piece</Label>
+                  <Input
+                    id="areaPerPiece"
+                    type="number"
+                    step="0.01"
+                    value={formData.areaPerPiece}
+                    onChange={(e) => setFormData({...formData, areaPerPiece: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="areaUnit">Area Unit</Label>
+                  <Select value={formData.areaUnit} onValueChange={(value) => setFormData({...formData, areaUnit: value as typeof formData.areaUnit})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select area unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="square_feet">Square Feet</SelectItem>
+                      <SelectItem value="square_meter">Square Meter</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <Label htmlFor="length">Length (mm)</Label>
+                  <Input
+                    id="length"
+                    type="number"
+                    step="0.1"
+                    value={formData.length}
+                    onChange={(e) => setFormData({...formData, length: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="width">Width (mm)</Label>
+                  <Input
+                    id="width"
+                    type="number"
+                    step="0.1"
+                    value={formData.width}
+                    onChange={(e) => setFormData({...formData, width: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="thickness">Thickness (mm)</Label>
+                  <Input
+                    id="thickness"
+                    type="number"
+                    step="0.1"
+                    value={formData.thickness}
+                    onChange={(e) => setFormData({...formData, thickness: e.target.value})}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="material">Material</Label>
+                  <Input
+                    id="material"
+                    value={formData.material}
+                    onChange={(e) => setFormData({...formData, material: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="finish">Finish</Label>
+                  <Input
+                    id="finish"
+                    value={formData.finish}
+                    onChange={(e) => setFormData({...formData, finish: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="color">Color</Label>
+                  <Input
+                    id="color"
+                    value={formData.color}
+                    onChange={(e) => setFormData({...formData, color: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="pattern">Pattern</Label>
+                  <Input
+                    id="pattern"
+                    value={formData.pattern}
+                    onChange={(e) => setFormData({...formData, pattern: e.target.value})}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="grade">Grade</Label>
+                  <Select value={formData.grade} onValueChange={(value) => setFormData({...formData, grade: value as typeof formData.grade})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select grade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="premium">Premium</SelectItem>
+                      <SelectItem value="standard">Standard</SelectItem>
+                      <SelectItem value="economy">Economy</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="waterResistance">Water Resistance</Label>
+                  <Select value={formData.waterResistance} onValueChange={(value) => setFormData({...formData, waterResistance: value as typeof formData.waterResistance})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select water resistance" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="slipResistance">Slip Resistance</Label>
+                <Select value={formData.slipResistance} onValueChange={(value) => setFormData({...formData, slipResistance: value as typeof formData.slipResistance})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select slip resistance" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="R9">R9</SelectItem>
+                    <SelectItem value="R10">R10</SelectItem>
+                    <SelectItem value="R11">R11</SelectItem>
+                    <SelectItem value="R12">R12</SelectItem>
+                    <SelectItem value="R13">R13</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label htmlFor="manufacturer">Manufacturer</Label>
+                  <Input
+                    id="manufacturer"
+                    value={formData.manufacturer}
+                    onChange={(e) => setFormData({...formData, manufacturer: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="origin">Origin</Label>
+                  <Input
+                    id="origin"
+                    value={formData.origin}
+                    onChange={(e) => setFormData({...formData, origin: e.target.value})}
+                  />
+                </div>
+              </div>
+
               <div>
                 <Label htmlFor="category">Category</Label>
                 <Input
@@ -264,25 +520,55 @@ const Products = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Price:</span>
-                  <span className="font-medium">${product.price.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Quantity:</span>
-                  <span className="font-medium">{product.quantity}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Category:</span>
-                  <span className="text-sm">{product.category}</span>
-                </div>
-                {product.barcode && (
+              <div className="space-y-2 text-sm">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Barcode:</span>
-                    <span className="text-sm font-mono">{product.barcode}</span>
+                    <span className="text-muted-foreground">Price:</span>
+                    <span className="font-medium">${product.price.toFixed(2)}</span>
                   </div>
-                )}
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Quantity:</span>
+                    <span className="font-medium">{product.quantity} {product.unit}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Category:</span>
+                    <span>{product.category}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Grade:</span>
+                    <span className="capitalize">{product.grade}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Size:</span>
+                    <span>{product.dimensions?.length}×{product.dimensions?.width}×{product.dimensions?.thickness}mm</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Area/Piece:</span>
+                    <span>{product.areaPerPiece} {product.areaUnit?.replace('_', ' ')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Material:</span>
+                    <span>{product.material}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Finish:</span>
+                    <span>{product.finish}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Water Resistance:</span>
+                    <span className="capitalize">{product.waterResistance}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Slip Resistance:</span>
+                    <span>{product.slipResistance}</span>
+                  </div>
+                  {product.barcode && (
+                    <div className="flex justify-between col-span-2">
+                      <span className="text-muted-foreground">Barcode:</span>
+                      <span className="font-mono">{product.barcode}</span>
+                    </div>
+                  )}
+                </div>
                 <div className="flex gap-2 pt-3">
                   <Button size="sm" variant="outline" onClick={() => handleEdit(product)} className="flex-1">
                     Edit
