@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import supabase from '@/lib/supabase';
 import { Database } from '@/integrations/supabase/types';
 
 type User = Database['public']['Tables']['users']['Row'];
@@ -107,6 +107,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single();
 
       if (userError || !userData) {
+        console.log('User lookup error:', userError);
         return false;
       }
 
@@ -117,6 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (signInError) {
+        console.log('Sign in error:', signInError);
         return false;
       }
 
